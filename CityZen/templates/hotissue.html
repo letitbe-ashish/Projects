@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Hot Issues - CityZen</title>
+
+  
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    
+</head>
+
+<body>
+  <div class="grid-container">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="menu-icon">
+        <i id="bar" class="fa-solid fa-bars fa-xl"></i>
+      </div>
+      <div class="header-right">
+        <a href="{{ url_for('message') }}"><i class="fa-solid fa-envelope fa-xl"></i></a>
+        <i id="accountBtn" class="fa-solid fa-user fa-xl"></i>
+      </div>
+    </header>
+
+    <!-- Account Panel -->
+    <div id="accountPanel" class="account-panel ">
+      <div class="slide-content">
+        <div class="profile-section">
+          <img class="profile-img" src="{{ url_for('static', filename='images/images.jpg') }}" />
+          <div class="userdetail">
+            <h2 class="profile-name">{{ username }}</h2>
+            <p class="profile-email">{{ email }}</p>
+          </div>
+        </div>
+        <hr class="divider" />
+        <div class="section">
+          <form action="{{ url_for('logout') }}" method="post">
+            <button type="submit"
+              class="logout">
+              
+              <span class="left"><i class="fa-solid fa-right-from-bracket icon"></i> Log Out</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <aside id="sidebar">
+      <div class="sidebar-title">
+        <div class="sidebar-brand">
+          <img src="{{ url_for('static', filename='images/logo-gold.png') }}" />
+        </div>
+      </div>
+
+      <ul class="sidebar-list">
+        <li class="sidebar-list-item">
+          <a href="{{ url_for('dashboard') }}"><i class="fa-solid fa-table-columns"></i> Dashboard</a>
+        </li>
+        <li class="sidebar-list-item">
+          <a href="{{ url_for('hotissue') }}"><i class="fa-solid fa-list-ol fa-l"></i> Hot Issues</a>
+        </li>
+        <li class="sidebar-list-item">
+          <a href="{{ url_for('reportform') }}"><i class="fa-solid fa-box-tissue"></i> Report An Issue</a>
+        </li>
+        <li class="sidebar-list-item">
+          <a href="{{ url_for('trackissue') }}"><i class="fa-solid fa-thumbtack"></i> Track Issue</a>
+        </li>
+        <li class="sidebar-list-item">
+          <a href="{{ url_for('help_page') }}"><i class="fa-solid fa-handshake-angle"></i> Help</a>
+        </li>
+        <li class="sidebar-list-item">
+          <a href="{{ url_for('aboutus') }}"><i class="fa-solid fa-inbox"></i> Aboutus</a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main -->
+    <main class="main-container p-5 px-[30px]">
+      <section class="with-sidebar px-4 sm:px-6 lg:px-8">
+        <h1
+          class="text-2xl font-bold mb-4 mt-12 flex gap-2 p-4 bg-[rgb(247,246,252)] shadow-[0_6px_7px_-4px_rgba(0,0,0,0.2)]">
+          Hot Issues</h1>
+
+        <!-- Control Bar -->
+        <div class="flex flex-wrap gap-4 mb-14">
+          <form method="get" id="filterForm" class="flex gap-4">
+            <div>
+              <label for="categoryFilter" class="mr-2 font-semibold text-xl text-gray-700">Category:</label>
+              <select name="category" id="categoryFilter"
+                class="rounded-lg border-gray-300 text-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                onchange="document.getElementById('filterForm').submit()">
+                <option value="all" {% if selected_category=='all' %}selected{% endif %}>All</option>
+                <option value="Municipal Department" {% if selected_category=='Municipal Department' %}selected{% endif
+                  %}>Municipal Department</option>
+                <option value="Judicial Department" {% if selected_category=='Judicial Department' %}selected{% endif
+                  %}>Judicial Department</option>
+                <option value="Corruption Department" {% if selected_category=='Corruption Department' %}selected{%
+                  endif %}>Corruption Department</option>
+                <option value="Transport Department" {% if selected_category=='Transport Department' %}selected{% endif
+                  %}>Transport Department
+                </option>
+                <option value="Health and Care Department" {% if selected_category==' Health and Care Department'
+                  %}selected{% endif %}>Health and Care Department</option>
+                <option value="Education Department" {% if selected_category==' Education Department' %}selected{% endif
+                  %}>Education Department</option>
+                <option value="Other" {% if selected_category==' Other' %}selected{% endif %}>Other</option>
+              </select>
+            </div>
+            <div>
+              <label for="sortBy" class="mr-2 font-medium text-xl text-gray-700">Sort By:</label>
+              <select name="sort" id="sortBy" class="rounded-lg text-lg border-gray-300 shadow-sm"
+                onchange="document.getElementById('filterForm').submit()">
+                <option value="votes" {% if sort_by=='votes' %}selected{% endif %}>Votes (High → Low)</option>
+                <option value="date" {% if sort_by=='date' %}selected{% endif %}>Date (Newest → Oldest)</option>
+              </select>
+            </div>
+          </form>
+        </div>
+
+       
+        <div id="cardList" class="flex flex-col gap-6">
+          {% if iss %}
+          {% for issue in iss %}
+          <div class="px-2 py-4 rounded-[10px] shadow hover:shadow-lg transition bg-[rgb(247,246,252)]">
+
+            <div
+              class="bg-white rounded-2xl  overflow-hidden flex flex-col md:flex-row">
+              <div class="aspect-w-4 aspect-h-3 w-full md:w-64 p-6 pr-2">
+                <img src="{{ url_for('static', filename='uploads/' + issue.image) if issue.image else '' }}"
+                  alt="Issue photo" class="w-full h-full object-cover rounded-l-2xl" loading="lazy" />
+              </div>
+              <div class="p-6 pl-2 flex flex-col flex-1">
+                <h2 class="font-semibold text-lg mb-1">#{{ loop.index }} {{ issue.issue_type }}</h2>
+                
+                <p class="text-sm  text-gray-700 px-2 py-1 rounded mb-2 flex-1">{{ issue.description }}</p>
+                <p class="text-sm text-gray-600 mb-4 "><strong>Address:</strong> {{ issue.address }}</p>
+                <p class="text-sm text-gray-600 mb-4">
+                  <strong>Status:</strong>
+                  <span id="status-{{ issue.id }}" class="font-semibold px-2 py-1 rounded 
+        {% if issue.status == 'Resolved' %} bg-green-100 text-green-700
+        {% elif issue.status == 'In Progress' %} bg-yellow-100 text-yellow-700
+        {% elif issue.status == 'Pending' %} bg-red-100 text-red-700
+        {% endif %}
+      ">{{ issue.status }}</span>
+                </p>
+                <p class="text-xs text-gray-500 mb-2">{{ issue.created_at }}</p>
+                <form class="vote-form" data-id="{{ issue.id }}" method="post" action="#">
+                  <button type="submit"
+                    class="inline-flex items-center justify-center gap-1 px-4 py-2 bg-red-100 text-red-600 font-medium rounded-lg hover:bg-red-200 transition vote-btn">
+                    <i class="bi bi-hand-thumbs-up"></i>
+                    <span class="vote-count">{{ issue.vote }}</span>
+                  </button>
+                </form>
+
+
+              </div>
+            </div>
+          </div>
+
+          {% endfor %}
+          {% else %}
+          <p class="text-red-500">No issues found.</p>
+
+          {% endif %}
+        </div>
+
+      </section>
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script defer>
+    const bar = document.getElementById('bar');
+    const sidebar = document.getElementById('sidebar');
+    const accountBtn = document.getElementById("accountBtn");
+    const accountPanel = document.getElementById("accountPanel");
+
+    bar.addEventListener('click', () => {
+      sidebar.classList.toggle('active');
+      bar.classList.toggle('active1');
+    });
+
+    accountBtn.addEventListener("click", () => {
+      accountPanel.classList.toggle("show");
+    });
+
+   
+
+    document.querySelectorAll('.vote-form').forEach(form => {
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const issueId = this.dataset.id;
+
+        try {
+          const response = await fetch(`/vote/${issueId}`, {
+            method: 'POST'
+          });
+
+          const result = await response.json();
+          if (result.success) {
+            const voteSpan = this.querySelector('.vote-count');
+            voteSpan.textContent = parseInt(voteSpan.textContent) + 1;
+          } else {
+            alert(result.message);
+          }
+        } catch (err) {
+          console.error(" Voting error:", err);
+          alert("Something went wrong. Please try again.");
+        }
+      });
+    });
+
+  </script>
+</body>
+
+</html>
