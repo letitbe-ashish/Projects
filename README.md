@@ -1,2 +1,2 @@
 ﻿﻿# Projects
-This is my first GitHub project from PowerShell.
+  Here's general project repositroy.
