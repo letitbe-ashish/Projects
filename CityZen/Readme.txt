@@ -5,7 +5,10 @@ A citizen–administration bridge built with Python Flask & Tailwind CSS
 CityZen is a web-based platform that empowers citizens to report civic, municipal, judicial, or corruption-related issues in their city.
 It provides transparent tracking, community voting, real-time updates, and direct communication between citizens and authorities.
 
+<<<<<<< HEAD
 🚀 Features
+=======
+>>>>>>> b7535e1 (CityZen)
 👤 Citizen Portal
 
 Sign up / Sign in
@@ -22,6 +25,10 @@ Escalate issues if no timely action is taken
 
 Direct query/complaint messaging with admins (real-time reply view)
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> b7535e1 (CityZen)
 🛠️ Admin / Authority Portal
 
 Secure admin login
@@ -36,6 +43,10 @@ Dashboard insights for complaint trends
 
 Manage escalated complaints
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> b7535e1 (CityZen)
 🧩 Tech Stack
 
 Backend:
@@ -44,6 +55,10 @@ Python
 
 Flask (Routing, Views, Session Management)
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> b7535e1 (CityZen)
 Frontend:
 
 HTML / Jinja Templates
@@ -52,6 +67,11 @@ Tailwind CSS
 
 JavaScript (for dynamic updates)
 
+<<<<<<< HEAD
 Database:
 
 SQLite
+=======
+
+Database: SQLite
+>>>>>>> b7535e1 (CityZen)
