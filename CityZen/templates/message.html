@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Messages - CityZen</title>
+
+
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+  <div class="grid-container">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="menu-icon">
+        <i id="bar" class="fa-solid fa-bars fa-xl"></i>
+      </div>
+      <div class="header-right">
+        <i id="accountBtn" class="fa-solid fa-user fa-xl"></i>
+        <a href="{{ url_for('message') }}"><i class="fa-solid fa-envelope fa-xl"></i></a>
+      </div>
+    </header>
+
+    <!-- Account Panel -->
+    <div id="accountPanel" class="account-panel">
+      <div class="slide-content">
+        <div class="profile-section">
+          <img class="profile-img" src="{{ url_for('static', filename='images/images.jpg') }}" />
+          <div class="userdetail">
+            <h2 class="profile-name">{{ username }}</h2>
+            <p class="profile-email">{{ email }}</p>
+          </div>
+        </div>
+        <hr class="divider" />
+        <div class="section">
+          <form action="{{ url_for('logout') }}" method="post">
+            <button type="submit" class="row logout ">
+
+              <span class="left"><i class="fa-solid fa-right-from-bracket icon"></i> Log Out</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <aside id="sidebar">
+      <div class="sidebar-title">
+        <div class="sidebar-brand">
+          <img src="{{ url_for('static', filename='images/logo-gold.png') }}" alt="">
+        </div>
+      </div>
+
+      <ul class="sidebar-list">
+        <li class="sidebar-list-item"><a href="{{ url_for('dashboard') }}"><i class="fa-solid fa-table-columns"></i>
+            Dashboard</a></li>
+        <li class="sidebar-list-item"><a href="{{ url_for('hotissue') }}"><i class="fa-solid fa-list-ol fa-l"></i> Hot
+            Issues</a></li>
+        <li class="sidebar-list-item"><a href="{{ url_for('reportform') }}"><i class="fa-solid fa-box-tissue"></i>
+            Report An Issue</a></li>
+        <li class="sidebar-list-item"><a href="{{ url_for('trackissue') }}"><i class="fa-solid fa-thumbtack"></i> Track
+            Issue</a></li>
+        <li class="sidebar-list-item"><a href="{{ url_for('help_page') }}"><i class="fa-solid fa-handshake-angle"></i>
+            Help</a></li>
+        <li class="sidebar-list-item"><a href="{{ url_for('aboutus') }}"><i class="fa-solid fa-inbox"></i> Aboutus</a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main -->
+    <main class="main-container">
+      <h1 class="msg-head">Messages</h1>
+
+      {% for msg in messages %}
+      <div class="msg">
+        <div class="msg-top">
+          <h2>{{ msg.name }}</h2>
+          <h3>{{ msg.email }}</h3>
+        </div>
+        <div class="msg-des">
+          <p><strong>Query:</strong> {{ msg.message }}</p>
+          {% if msg.answer and msg.answer != 'Pending' %}
+          <p class="mt-2 text-green-700"><strong>Admin Reply:</strong> {{ msg.answer }}</p>
+          {% else %}
+          <p class="mt-2 text-yellow-600"><em>No reply yet</em></p>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+
+
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    const bar = document.getElementById('bar');
+    const sidebar = document.getElementById('sidebar');
+    bar.addEventListener('click', () => {
+      sidebar.classList.toggle('active');
+      bar.classList.toggle('active1');
+    });
+
+    const accountBtn = document.getElementById("accountBtn");
+    const accountPanel = document.getElementById("accountPanel");
+    let isPanelOpen = false;
+
+    accountBtn.addEventListener("click", () => {
+      accountPanel.classList.toggle("show");
+      isPanelOpen = !isPanelOpen;
+    });
+  </script>
+</body>
+
+</html>

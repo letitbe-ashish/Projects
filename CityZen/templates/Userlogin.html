@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title> Login/Register - CityZen</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    .flash-alert {
+      animation: slideInRight 0.5s ease forwards;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen flex items-center justify-center font-sans bg-gray-100 p-4 gap-10">
+
+  <!-- Flash Alert Message -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  <div id="alertBox" class="fixed top-5 right-5 z-50 space-y-4">
+    {% for category, message in messages %}
+    <div class="flash-alert text-white px-4 py-3 rounded-lg shadow-lg
+            {% if category == 'success' %}
+              bg-green-500
+            {% elif category == 'error' %}
+              bg-red-500
+            {% else %}
+              bg-gray-700
+            {% endif %}">
+      {{ message }}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% endwith %}
+
+
+  <div id="imageContainer" class="absolute top-3 left-4">
+    <img class="w-35 h-20" src="{{ url_for('static', filename='images/logo-gold.png') }}" />
+  </div>
+
+
+  <div id="container" class="relative w-[800px] h-[500px] bg-white rounded-xl overflow-hidden shadow-2xl">
+
+    <div id="formContainer" class="absolute inset-0 flex transition-all duration-700">
+
+      <!-- Login Panel -->
+      <div id="loginPanel"
+        class="w-full flex absolute inset-0 transition-all duration-700 ease-in-out translate-x-0 opacity-100 visible z-10">
+
+        <div
+          class="w-1/2 bg-[#6A8DFF] text-white flex flex-col items-center justify-center text-center lg:px-10 sm:px-0 rounded-tr-[200px] rounded-br-[200px]">
+          <h2 class="text-2xl font-bold mb-2">Hello, Welcome!</h2>
+          <p class="text-sm mb-4">Don't have an account?</p>
+          <button onclick="switchToRegister()"
+            class="bg-white text-indigo-500 px-6 py-2 rounded-full font-semibold hover:bg-gray-100">
+            Sign Up
+          </button>
+        </div>
+
+        <div class="w-1/2 p-6 lg:p-10 sm:px-6 flex flex-col justify-center">
+          <form method="POST" action="{{ url_for('Ulogin') }}">
+            <h2 class="text-2xl font-semibold mb-5">Login</h2>
+            <input type="text" name="login_username" placeholder="Username"
+              class="mb-3 w-full p-3 rounded-md border border-gray-300" />
+            <input type="password" name="login_password" placeholder="Password"
+              class="mb-3 w-full p-3 rounded-md border border-gray-300" />
+            <button
+              class="bg-indigo-500 w-full text-white mt-4 py-3 rounded-md font-medium hover:bg-indigo-600 transition">
+              Login
+            </button>
+          </form>
+
+          <a href="{{ url_for('adminlogin') }}">
+            <button
+              class="flex w-full items-center justify-center bg-gray-100 mt-4 py-2 px-5 rounded-xl shadow hover:bg-gray-200 transition">
+              <span class="text-lg font-bold text-indigo-500">Admin Login</span>
+            </button>
+          </a>
+        </div>
+      </div>
+
+      <!-- Register Panel -->
+      <div id="registerPanel"
+        class="w-full flex absolute inset-0 transition-all duration-700 ease-in-out translate-x-full opacity-0 invisible">
+
+        <div class="w-1/2 p-6 lg:p-10 sm:px-6 flex flex-col justify-center">
+          <form method="POST" action="{{ url_for('Ulogin') }}">
+            <h2 class="text-2xl font-semibold mb-5">Sign Up</h2>
+            <input type="text" name="register_username" placeholder="Username"
+              class="mb-3 w-full p-3 rounded-md border border-gray-300" />
+            <input type="email" name="register_email" placeholder="Email"
+              class="mb-3 w-full p-3 rounded-md border border-gray-300" />
+            <input type="password" name="register_password" placeholder="Password"
+              class="mb-3 w-full p-3 rounded-md border border-gray-300" />
+            <button class="bg-indigo-500 w-full text-white py-3 rounded-md font-medium hover:bg-indigo-600 transition">
+              Sign Up
+            </button>
+          </form>
+
+          <a href="{{ url_for('adminlogin') }}">
+            <button
+              class="flex w-full items-center justify-center bg-gray-100 mt-4 py-2 px-5 rounded-xl shadow hover:bg-gray-200 transition">
+              <span class="text-lg font-bold text-indigo-500">Admin Login</span>
+            </button>
+          </a>
+        </div>
+
+        <div
+          class="w-1/2 bg-[#6A8DFF] text-white flex flex-col items-center justify-center text-center px-10 rounded-tl-[200px] rounded-bl-[200px]">
+          <h2 class="text-2xl font-bold mb-2">Welcome Back!</h2>
+          <p class="text-sm mb-4">Already have an account?</p>
+          <button onclick="switchToLogin()"
+            class="bg-white text-indigo-500 px-6 py-2 rounded-full font-semibold hover:bg-gray-100">
+            Login
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const loginPanel = document.getElementById("loginPanel");
+    const registerPanel = document.getElementById("registerPanel");
+
+    function switchToRegister() {
+      loginPanel.style.cssText = `
+        transform: translateX(-100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.7s ease-in-out;
+      `;
+
+      registerPanel.style.cssText = `
+        transform: translateX(0);
+        opacity: 1;
+        visibility: visible;
+        transition: all 0.7s ease-in-out;
+      `;
+    }
+
+    function switchToLogin() {
+      registerPanel.style.cssText = `
+        transform: translateX(100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.7s ease-in-out;
+      `;
+
+      loginPanel.style.cssText = `
+        transform: translateX(0);
+        opacity: 1;
+        visibility: visible;
+        transition: all 0.7s ease-in-out;
+      `;
+    }
+
+    setTimeout(() => {
+      const alertBox = document.getElementById('alertBox');
+      if (alertBox) alertBox.style.display = 'none';
+    }, 2000);
+  </script>
+</body>
+
+</html>

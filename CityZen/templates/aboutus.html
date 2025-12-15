@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>About Us - CityZen</title>
+
+
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@100;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+  <div class="grid-container">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="menu-icon">
+        <i id="bar" class="fa-solid fa-bars fa-xl"></i>
+      </div>
+      <div class="header-right">
+        <i id="accountBtn" class="fa-solid fa-user fa-xl"></i>
+        <a href="{{ url_for('message') }}"><i class="fa-solid fa-envelope fa-xl"></i></a>
+      </div>
+    </header>
+
+    <!-- Account Panel -->
+    <div id="accountPanel" class="account-panel ">
+      <div class="slide-content">
+        <div class="profile-section">
+          <img class="profile-img" src="{{ url_for('static', filename='images/images.jpg') }}" />
+          <div class="userdetail">
+            <h2 class="profile-name">{{ username }}</h2>
+            <p class="profile-email">{{ email }}</p>
+          </div>
+        </div>
+        <hr class="divider" />
+        <div class="section">
+          <form action="{{ url_for('logout') }}" method="post">
+            <button type="submit" class="logout">
+
+              <span class="left"><i class="fa-solid fa-right-from-bracket icon"></i> Log Out</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <aside id="sidebar">
+      <div class="sidebar-title">
+        <div class="sidebar-brand">
+          <img src="{{ url_for('static', filename='images/logo-gold.png') }}" />
+        </div>
+      </div>
+
+      <ul class="sidebar-list">
+        <li class="sidebar-list-item">
+          <a href="{{ url_for('dashboard') }}"><i class="fa-solid fa-table-columns"></i> Dashboard</a>
+        </li>
+        <li class="sidebar-list-item">
+          <a href="{{ url_for('hotissue') }}"><i class="fa-solid fa-list-ol fa-l"></i> Hot Issues</a>
+        </li>
+        <li class="sidebar-list-item">
+          <a href="{{ url_for('reportform') }}"><i class="fa-solid fa-box-tissue"></i> Report An Issue</a>
+        </li>
+        <li class="sidebar-list-item">
+          <a href="{{ url_for('trackissue') }}"><i class="fa-solid fa-thumbtack"></i> Track Issue</a>
+        </li>
+        <li class="sidebar-list-item">
+          <a href="{{ url_for('help_page') }}"><i class="fa-solid fa-handshake-angle"></i> Help</a>
+        </li>
+        <li class="sidebar-list-item">
+          <a href="{{ url_for('aboutus') }}"><i class="fa-solid fa-inbox"></i> Aboutus</a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-container px-[30px] p-5 mb-10">
+      <h1
+        class="text-3xl font-bold mb-12 mt-12 py-4 px-10  bg-[rgb(247,246,252)] shadow-[0_6px_7px_-4px_rgba(0,0,0,0.2)]">
+        About
+        CityZen</h1>
+
+      <div class=" p-5 bg-[rgb(247,246,252)] shadow-[0_6px_7px_-4px_rgba(0,0,0,0.2)]">
+        <div class="bg-white p-5 rounded-2xl">
+          <section class="mb-10">
+            <h2 class="text-2xl font-semibold mb-2">What is CityZen?</h2>
+            <p class="text-gray-700 leading-relaxed pl-[10px]">
+              <strong>CityZen</strong> is a smart web platform designed to bridge the communication gap between citizens
+              and
+              local municipal authorities. It empowers users to report, track, and escalate urban issues such as
+              potholes,
+              garbage, water leaks, broken streetlights, and more.
+            </p>
+          </section>
+
+          <section class="mb-10">
+            <h2 class="text-2xl font-semibold mb-2">Our Mission</h2>
+            <p class="text-gray-700 leading-relaxed pl-[10px]">
+              Our mission is to make urban communities cleaner, safer, and more responsive by providing a simple yet
+              effective way for people to raise their voices and take part in civic management. CityZen encourages
+              transparency, accountability, and active citizen participation.
+            </p>
+          </section>
+
+          <section class="mb-10">
+            <h2 class="text-2xl font-semibold mb-2">Key Features</h2>
+            <ul class="list-disc list-inside text-gray-700 pl-[10px]">
+              <li class="mb-4">Easy issue reporting with photo, type, and description</li>
+              <li class="mb-4">Live tracking of issue status and location</li>
+              <li class="mb-4">Voting system to prioritize critical problems</li>
+              <li class="mb-4">Escalation option for unresolved reports</li>
+              <li class="mb-4">Separate admin and user dashboards</li>
+            </ul>
+          </section>
+
+          <section class="mb-10">
+            <h2 class="text-2xl font-semibold mb-2">Who Built CityZen?</h2>
+            <p class="text-gray-700 leading-relaxed pl-[10px]">
+              This project is built by a passionate team of students committed to improving civic communication using
+              modern
+              web technologies.
+            </p>
+          </section>
+
+          <section>
+            <h2 class="text-2xl font-semibold mb-2">Contact Us</h2>
+            <p class="text-gray-700 pl-[10px]">
+              For feedback, suggestions, or support, please visit our <a href="{{ url_for('help_page') }}"
+                class="text-blue-600 underline">Help Page</a> or email us at <span
+                class="font-medium">support@cityzenapp.in</span>
+            </p>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Sidebar/Panel Scripts -->
+  <script>
+    const bar = document.getElementById('bar');
+    const sidebar = document.getElementById('sidebar');
+    bar.addEventListener('click', () => {
+      sidebar.classList.toggle('active');
+      bar.classList.toggle('active1');
+    });
+
+    const accountBtn = document.getElementById('accountBtn');
+    const accountPanel = document.getElementById('accountPanel');
+    accountBtn.addEventListener('click', () => {
+      accountPanel.classList.toggle('show');
+    });
+  </script>
+</body>
+
+</html>
