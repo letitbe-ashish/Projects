@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Report an Issue - CityZen</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    crossorigin="anonymous" />
+
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js" type="module"></script>
+</head>
+
+<body>
+  <div class="grid-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="menu-icon">
+        <i id="bar" class="fa-solid fa-bars fa-xl"></i>
+      </div>
+      <div class="header-right">
+        <i id="accountBtn" class="fa-solid fa-user fa-xl"></i>
+        <a href="{{ url_for('message') }}"><i class="fa-solid fa-envelope fa-xl"></i></a>
+      </div>
+    </header>
+
+    <!-- Account Panel -->
+    <div id="accountPanel" class="account-panel ">
+      <div class="slide-content">
+        <div class="profile-section">
+          <img class="profile-img" src="{{ url_for('static', filename='images/images.jpg') }}" />
+          <div class="userdetail">
+            <h2 class="profile-name">{{ username }}</h2>
+            <p class="profile-email">{{ email }}</p>
+          </div>
+        </div>
+        <hr class="divider" />
+        <div class="section">
+          <form action="{{ url_for('logout') }}" method="post">
+            <button type="submit" class="logout">
+
+              <span class="left"><i class="fa-solid fa-right-from-bracket icon"></i> Log Out</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <aside id="sidebar">
+      <div class="sidebar-title">
+        <div class="sidebar-brand">
+          <img src="{{ url_for('static', filename='images/logo-gold.png') }}" />
+        </div>
+      </div>
+
+      <ul class="sidebar-list">
+        <li class="sidebar-list-item">
+          <a href="{{ url_for('dashboard') }}"><i class="fa-solid fa-table-columns"></i> Dashboard</a>
+        </li>
+        <li class="sidebar-list-item">
+          <a href="{{ url_for('hotissue') }}"><i class="fa-solid fa-list-ol fa-l"></i> Hot Issues</a>
+        </li>
+        <li class="sidebar-list-item">
+          <a href="{{ url_for('reportform') }}"><i class="fa-solid fa-box-tissue"></i> Report An Issue</a>
+        </li>
+        <li class="sidebar-list-item">
+          <a href="{{ url_for('trackissue') }}"><i class="fa-solid fa-thumbtack"></i> Track Issue</a>
+        </li>
+        <li class="sidebar-list-item">
+          <a href="{{ url_for('help_page') }}"><i class="fa-solid fa-handshake-angle"></i> Help</a>
+        </li>
+        <li class="sidebar-list-item">
+          <a href="{{ url_for('aboutus') }}"><i class="fa-solid fa-inbox"></i> Aboutus</a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-container p-5 px-[30px] block pt-[40px]">
+
+      <h1
+        class="text-2xl font-bold mb-6 text-grey-700 sticky h-fit p-4 bg-[rgb(247,246,252)] shadow-[0_6px_7px_-4px_rgba(0,0,0,0.2)] flex gap-2">
+        Report an Issue
+      </h1>
+
+
+      <div class="flex flex-col lg:flex-row gap-10 items-end z-20">
+
+        <div class="fixed top-[60px] left-[290px] w-[600px] h-full -z-10 hidden lg:block overflow-hidden">
+          <iframe src="https://lottie.host/embed/627bc67e-0b23-4bb0-b86a-5e5e987a4830/MGDsaqW1GB.lottie"
+            class="w-full h-full border-none pointer-events-none"></iframe>
+        </div>
+
+
+
+        <div
+          class="w-full relative z-10 flex flex-col lg:flex-row justify-end items-start min-h-screen px-6 pt-10 gap-10">
+
+
+          <div class="hidden lg:block w-1/2"></div>
+
+
+          <div class="w-full lg:w-1/2 max-w-xl bg-[rgb(247,246,252)] p-5 rounded-xl shadow-xl">
+            <form method="POST" action="{{ url_for('reportform') }}" enctype="multipart/form-data"
+              class="bg-white rounded-2xl  p-8 space-y-4">
+
+              <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+              <input type="text" id="name" name="name" required
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+
+              <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
+              <input type="text" id="address" name="address" required
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+
+              <label for="pincode" class="block text-sm font-medium text-gray-700">Pincode</label>
+              <input type="text" id="pincode" name="pincode" required
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+
+              <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+              <input type="email" id="email" name="email" required
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+
+              <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
+              <input type="tel" id="phone" name="phone" required
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+
+              <label for="issue_type" class="block text-sm font-medium text-gray-700">Issue Type</label>
+              <select id="issue_type" name="issue_type" required
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                <option value="">Select an issue</option>
+                <option value="Municipal issue">Municipal issue</option>
+                <option value="Judicial issue">Judicial issue</option>
+                <option value="Corruption issue">Corruption issue</option>
+                <option value="Transport issue">Transport issue</option>
+                <option value="Health and care issue">
+                  Health and Care issue
+                </option>
+                <option value="Education issue">Education issue</option>
+                <option value="Other">Other</option>
+              </select>
+
+              <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+              <textarea id="description" name="description" rows="4" required
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
+
+              <label for="image" class="block text-sm font-medium text-gray-700">Upload Image (optional)</label>
+              <input type="file" id="image" name="image" accept="image/*"
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+
+              <button type="submit"
+                class="w-full mt-2 bg-blue-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200">
+                Submit Issue
+              </button>
+            </form>
+          </div>
+        </div>
+
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Script -->
+  <script>
+    const bar = document.getElementById("bar");
+    const sidebar = document.getElementById("sidebar");
+    bar.addEventListener("click", () => {
+      sidebar.classList.toggle("active");
+      bar.classList.toggle("active1");
+    });
+
+    const accountBtn = document.getElementById("accountBtn");
+    const accountPanel = document.getElementById("accountPanel");
+
+    accountBtn.addEventListener("click", () => {
+      accountPanel.classList.toggle("show");
+    });
+  </script>
+</body>
+
+</html>
