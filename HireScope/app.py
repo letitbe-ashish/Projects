@@ -25,50 +25,66 @@ def extract_text_from_pdf(pdf_path):
 
 # prompt function
 def analyze_resume_with_groq(resume_text, job_role):
-    
-  prompt = f"""
-  You are an HR expert analyzing a resume for the position: {job_role}
 
-  Resume text:
-  {resume_text[:2500]}
+    prompt = f"""
+    You are an HR expert analyzing a resume for the position: {job_role}
 
-  Extract the following information and respond with ONLY a valid JSON object:
+    Resume text:
+    {resume_text[:2500]}
 
-  {{
-      "name": "Full Name Here",
-      "skills": "skill1, skill2, skill3, skill4, skill5",
-      "experience": "X years experience in relevant field at Y company with specific achievements",
-      "match_percentage": 75
-  }}
+    Extract the following information and respond with ONLY a valid JSON object:
 
-  Requirements:
-  - name: Extract the candidate's full name (first and last name)
-  - skills: List exactly 5-8 relevant skills separated by commas
-  - experience: Write 1-2 sentences about their work experience along with compnay name duration and role and achievements and college name if applicable.
-  - match_percentage: Rate 0-100 based on how well they fit the {job_role} role
+    {{
+        "name": "Full Name Here",
+        "skills": "skill1, skill2, skill3, skill4, skill5",
+        "experience": "X years experience in relevant field at Y company with specific achievements",
+        "match_percentage": 75
+    }}
 
-  Return ONLY the JSON object, no explanations.
-  """
-  
-  response = groq_client.chat.completions.create(
-      messages=[{"role": "user", "content": prompt}],
-      model="meta-llama/llama-4-maverick-17b-128e-instruct",
-      temperature=0.2,
-      
-  )
-  
-  response_text = response.choices[0].message.content.strip()
-  
-  data = json.loads(response_text)
-  
-  result = {
-      'name': str(data.get('name', '')).strip(),
-      'skills': str(data.get('skills', '')).strip(),
-      'experience': str(data.get('experience', '')).strip(),
-      'match_percentage': int(data.get('match_percentage', 0))
-  }
-  
-  return result
+    Requirements:
+    - name: Extract the candidate's full name (first and last name)
+    - skills: List exactly 5-8 relevant skills separated by commas
+    - experience: Write 1-2 sentences about their work experience along with company name, duration, role, achievements and college name if applicable.
+    - match_percentage: Rate 0-100 based on how well they fit the {job_role} role
+
+    Return ONLY the JSON object, no explanations.
+    """
+
+    response = groq_client.chat.completions.create(
+        messages=[{"role": "user", "content": prompt}],
+        model="meta-llama/llama-4-maverick-17b-128e-instruct",
+        temperature=0.2,
+    )
+
+    response_text = response.choices[0].message.content.strip()
+
+    if not response_text:
+        raise ValueError("Groq returned an empty response")
+
+
+    if response_text.startswith("```"):
+        response_text = (
+            response_text
+            .replace("```json", "")
+            .replace("```", "")
+            .strip()
+        )
+
+    try:
+        data = json.loads(response_text)
+    except json.JSONDecodeError:
+        print("Groq returned invalid JSON:")
+        print(response_text)
+        raise ValueError("Invalid JSON response from Groq")
+
+    result = {
+        'name': str(data.get('name', '')).strip(),
+        'skills': str(data.get('skills', '')).strip(),
+        'experience': str(data.get('experience', '')).strip(),
+        'match_percentage': int(data.get('match_percentage', 0))
+    }
+
+    return result
 
 # Home redirector
 @app.route('/')
