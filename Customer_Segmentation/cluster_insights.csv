@@ -1,0 +1,7 @@
+Cluster,Segment_Name,Customer_Count,Male_Count,Female_Count,Min_Age,Max_Age,Avg_Age,Min_Income,Max_Income,Avg_Income,Min_Spending,Max_Spending,Avg_Spending
+0,"Young avg-income, avg-spending",38,13,25,18,40,27.0,39,76,56.7,29,61,49.1
+1,"Older avg-income, avg-spending",45,19,26,43,70,56.3,38,79,54.3,35,60,49.1
+2,"High Income, Low Spending",34,20,14,19,59,41.3,71,137,88.5,1,39,16.8
+3,"Low Income, Low Spending ",21,8,13,20,67,45.5,16,39,26.3,3,40,19.4
+4,"Young low-income, high-spending(Teen Kids)",23,10,13,18,35,25.0,15,39,25.3,39,99,77.6
+5,"Avg Age, High Income, High Spending",39,18,21,27,40,32.7,69,137,86.5,63,97,82.1
